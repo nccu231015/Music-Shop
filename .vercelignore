@@ -1,0 +1,12 @@
+# Python 後端檔案（不需要部署到 Vercel）
+image_downloader.py
+Dockerfile
+requirements.txt
+.gcloudignore
+
+# 本地開發
+downloads/
+*.pyc
+__pycache__/
+.DS_Store
+

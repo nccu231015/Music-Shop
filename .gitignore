@@ -1,0 +1,31 @@
+# Python 後端（已部署到 Cloud Run，不需要上傳）
+image_downloader.py
+Dockerfile
+requirements.txt
+.gcloudignore
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# Downloads
+downloads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Environment
+.env
+*.log
+
+# Build files
+node_modules/
+.vercel
+
