@@ -83,8 +83,16 @@ function displayResults(data) {
     if (data && data.length > 0) {
         let originalContent;
         
-        // 檢查新格式（LLM 直接輸出）
-        if (data[0].content && data[0].content.parts && data[0].content.parts[0]) {
+        // 檢查 Gemini API 完整格式
+        if (data[0].candidates && data[0].candidates[0] && data[0].candidates[0].content && data[0].candidates[0].content.parts && data[0].candidates[0].content.parts[0]) {
+            originalContent = data[0].candidates[0].content.parts[0].text;
+        }
+        // 檢查最新格式（Claude/新 LLM 輸出）
+        else if (data[0].content && Array.isArray(data[0].content) && data[0].content[0] && data[0].content[0].text) {
+            originalContent = data[0].content[0].text;
+        }
+        // 檢查 Gemini 格式（LLM 直接輸出）
+        else if (data[0].content && data[0].content.parts && data[0].content.parts[0]) {
             originalContent = data[0].content.parts[0].text;
         } 
         // 檢查 OpenAI 格式
