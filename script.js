@@ -80,15 +80,37 @@ function displayResults(data) {
     results.style.display = 'block';
     
     // 處理 HTML 內容
-    if (data && data.length > 0 && data[0].output) {
-        const originalContent = data[0].output;  // 保存原始內容（用於下載）
+    if (data && data.length > 0) {
+        let originalContent;
         
-        // 前端預覽：移除 markdown 的程式碼區塊標記
-        const cleanHtml = originalContent.replace(/```html\n?/g, '').replace(/```\n?/g, '');
-        htmlPreview.innerHTML = cleanHtml;
+        // 檢查新格式（LLM 直接輸出）
+        if (data[0].content && data[0].content.parts && data[0].content.parts[0]) {
+            originalContent = data[0].content.parts[0].text;
+        } 
+        // 檢查 OpenAI 格式
+        else if (data[0].choices && data[0].choices[0] && data[0].choices[0].message) {
+            originalContent = data[0].choices[0].message.content;
+        }
+        // 檢查舊格式（AI Agent 輸出）
+        else if (data[0].output) {
+            originalContent = data[0].output;
+        }
+        // 檢查直接文字格式
+        else if (data[0].text) {
+            originalContent = data[0].text;
+        }
         
-        // 將原始內容存到全域變數供下載使用
-        window.originalHtmlContent = originalContent;
+        if (originalContent) {
+            // 前端預覽：移除 markdown 的程式碼區塊標記
+            const cleanHtml = originalContent.replace(/```html\n?/g, '').replace(/```\n?/g, '');
+            htmlPreview.innerHTML = cleanHtml;
+            
+            // 將原始內容存到全域變數供下載使用
+            window.originalHtmlContent = originalContent;
+        } else {
+            htmlPreview.innerHTML = '<p style="color: #999;">無商品資訊</p>';
+            window.originalHtmlContent = null;
+        }
     } else {
         htmlPreview.innerHTML = '<p style="color: #999;">無商品資訊</p>';
         window.originalHtmlContent = null;
